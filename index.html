@@ -1,0 +1,867 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#761f30">
+<title>For Lavithamma, With Love</title>
+
+<style>
+:root {
+  --red: #761F30;
+  --dark: #4D1422;
+  --cream: #FFF8EF;
+  --gold: #C6A15B;
+  --ink: #4D2730;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* PAGE VISIBILITY */
+#welcome {
+  display: flex;
+}
+
+#home,
+#letter,
+#memories,
+#song,
+#birthday,
+footer {
+  display: none;
+}
+
+#birthday-app.welcome-passed #welcome {
+  display: none;
+}
+
+#birthday-app.welcome-passed #home {
+  display: flex;
+}
+
+#birthday-app.letter-page-open #home {
+  display: none !important;
+}
+
+#birthday-app.letter-page-open #letter {
+  display: flex !important;
+}
+
+#birthday-app.letter-page-open:not(.after-letter) #memories,
+#birthday-app.letter-page-open:not(.after-letter) #song,
+#birthday-app.letter-page-open:not(.after-letter) #birthday,
+#birthday-app.letter-page-open:not(.after-letter) footer {
+  display: none !important;
+}
+
+#birthday-app.after-letter #letter {
+  display: none !important;
+}
+
+#birthday-app.after-letter #memories,
+#birthday-app.after-letter #song,
+#birthday-app.after-letter #birthday,
+#birthday-app.after-letter footer {
+  display: block !important;
+}
+
+/* BUTTONS */
+.primary-btn {
+  border: 1px solid var(--gold);
+  color: var(--cream);
+  background: var(--red);
+  border-radius: 999px;
+  padding: 15px 25px;
+  box-shadow: 0 7px 22px #1e071044;
+  transition: transform .2s, background .2s;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  background: #8B2C40;
+}
+
+.small-note {
+  color: #DABBB2;
+  font: 12px Arial, sans-serif;
+  margin-top: 14px;
+  line-height: 1.7;
+}
+
+/* WELCOME PAGE */
+.welcome-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px;
+  background: radial-gradient(ellipse at center, #702033, #4D1422 75%);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-screen::before,
+.welcome-screen::after {
+  content: "♡";
+  position: absolute;
+  color: #E8C8A2;
+  opacity: .55;
+  font-size: 42px;
+}
+
+.welcome-screen::before {
+  top: 13%;
+  left: 12%;
+  transform: rotate(-18deg);
+}
+
+.welcome-screen::after {
+  right: 12%;
+  bottom: 15%;
+  transform: rotate(15deg);
+}
+
+.welcome-screen h1 {
+  max-width: 850px;
+}
+
+.welcome-screen p {
+  max-width: 520px;
+  line-height: 1.9;
+  color: #F1DCD2;
+  font-size: 17px;
+  margin: 24px auto 30px;
+}
+
+/* ENVELOPE PAGE */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.topline {
+  text-align: center;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font: 11px Arial, sans-serif;
+  padding: 22px 14px 8px;
+}
+
+.eyebrow {
+  color: #E6CDA0;
+  font-size: 13px;
+  letter-spacing: .12em;
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: clamp(42px, 8vw, 78px);
+  line-height: 1.08;
+  margin: 0;
+}
+
+.script {
+  font-style: italic;
+  color: #E8C8A2;
+}
+
+.hero p {
+  max-width: 520px;
+  line-height: 1.8;
+  color: #F1DCD2;
+  font-size: 16px;
+  margin: 22px auto 28px;
+}
+
+.envelope-wrap {
+  margin: 16px auto 24px;
+  width: min(300px, 78vw);
+  height: 184px;
+  position: relative;
+  display: grid;
+  place-items: end center;
+}
+
+.envelope {
+  width: 100%;
+  height: 130px;
+  background: #F4E5CE;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 16px 35px #1e071080;
+  display: grid;
+  place-items: center;
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #E7D0B3;
+  clip-path: polygon(0 0, 50% 60%, 100% 0);
+}
+
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #F8EBD8;
+  clip-path: polygon(0 100%, 50% 43%, 100% 100%);
+}
+
+.seal {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #FBE8D2;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  border: 1px solid var(--gold);
+}
+
+.envelope-note {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88%;
+  height: 100px;
+  background: var(--cream);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+  font-size: 20px;
+  box-shadow: 0 3px 15px #1e071044;
+  transition: transform .8s ease;
+}
+
+.envelope-wrap.open .envelope-note {
+  transform: translate(-50%, -30px) rotate(-2deg);
+}
+
+/* SHARED SECTIONS */
+.section {
+  padding: 78px 20px;
+  background: #F5E9D5;
+  color: var(--dark);
+}
+
+.section.dark {
+  background: var(--red);
+  color: var(--cream);
+}
+
+.section-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font: 11px Arial, sans-serif;
+  color: #B85C68;
+  text-align: center;
+}
+
+.dark .kicker {
+  color: #E5C98D;
+}
+
+h2 {
+  font-size: clamp(32px, 5vw, 51px);
+  line-height: 1.2;
+  text-align: center;
+  margin: 14px 0 18px;
+}
+
+.intro {
+  max-width: 650px;
+  margin: 0 auto 34px;
+  text-align: center;
+  line-height: 1.85;
+  font-size: 16px;
+}
+
+/* LETTER */
+.letter {
+  max-width: 720px;
+  margin: 34px auto 0;
+  padding: clamp(25px, 6vw, 55px);
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid #D8C3A2;
+  box-shadow: 0 15px 45px #2c061522;
+  position: relative;
+}
+
+.letter::before {
+  content: "♡";
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #B85C68;
+  font-size: 24px;
+}
+
+.letter p {
+  line-height: 1.95;
+  font-size: 16px;
+}
+
+.signature {
+  font-size: 23px;
+  font-style: italic;
+  color: var(--red);
+  margin-top: 24px;
+}
+
+.continue-wrap {
+  text-align: center;
+  margin-top: 28px;
+}
+
+/* MEMORIES */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 36px;
+}
+
+.memory-card {
+  background: var(--cream);
+  padding: 12px 12px 20px;
+  color: var(--ink);
+  box-shadow: 0 8px 20px #3f14200f;
+  transform: rotate(-1deg);
+}
+
+.memory-card:nth-child(2) {
+  transform: rotate(1.3deg);
+}
+
+.memory-card:nth-child(3) {
+  transform: rotate(-.4deg);
+}
+
+.photo-placeholder {
+  aspect-ratio: 4/5;
+  background: #E8D8C6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 12px;
+  color: #79535A;
+  border: 1px dashed #BD9D8E;
+}
+
+.photo-placeholder span {
+  font-size: 34px;
+}
+
+.photo-placeholder small {
+  font: 11px Arial, sans-serif;
+  line-height: 1.5;
+}
+.memory-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid #E8D8C6;
+}
+
+
+
+.caption {
+  text-align: center;
+  font-style: italic;
+  padding-top: 14px;
+  font-size: 15px;
+}
+
+/* FINAL BIRTHDAY PAGE */
+.cake-section {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cake-section .section-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.birthday-love-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.birthday-love-emoji {
+  position: absolute;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  animation-name: birthdayFloatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+.cake {
+  width: 180px;
+  height: 150px;
+  margin: 42px auto 28px;
+  position: relative;
+}
+
+.cake-top {
+  position: absolute;
+  top: 29px;
+  left: 10px;
+  width: 160px;
+  height: 43px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #FFD9C9, #F5BBAF);
+  border: 2px solid #E7A59B;
+  z-index: 2;
+}
+
+.cake-body {
+  position: absolute;
+  top: 48px;
+  left: 10px;
+  width: 160px;
+  height: 70px;
+  background: linear-gradient(90deg, #D98C8E, #F0B6AA, #D98C8E);
+  border-radius: 0 0 14px 14px;
+  border-bottom: 7px solid #C76E79;
+}
+
+.cake-body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 22px;
+  background: #FFF0DB;
+  border-radius: 0 0 50% 50%;
+}
+
+.candle {
+  position: absolute;
+  z-index: 3;
+  top: 3px;
+  left: 86px;
+  width: 9px;
+  height: 34px;
+  background: repeating-linear-gradient(45deg, #FFF8EF 0 5px, #C76E79 5px 9px);
+  border-radius: 2px 2px 0 0;
+}
+
+.flame {
+  position: absolute;
+  z-index: 4;
+  top: -30px;
+  left: -7px;
+  width: 23px;
+  height: 30px;
+  display: block;
+  background: linear-gradient(#FFFDE0, #FFC13D, #E94B36);
+  border-radius: 52% 48% 48% 52% / 68% 68% 32% 32%;
+  transform-origin: 50% 92%;
+  filter: drop-shadow(0 0 8px #FFDC66);
+  animation: flameDance .38s ease-in-out infinite alternate;
+}
+
+.cake-blown .flame {
+  opacity: 0;
+  transform: scale(.2) translateY(8px);
+  transition: opacity .15s, transform .2s;
+}
+
+.final-message {
+  display: none;
+  margin: 25px auto 0;
+  max-width: 600px;
+  padding: 25px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  animation: rise .8s both;
+}
+
+.final-message.show {
+  display: block;
+}
+
+.final-message h3 {
+  font-size: 32px;
+  color: #F0D49D;
+  margin: 0 0 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 32px 20px 42px;
+  color: #D9B9B0;
+  font-size: 13px;
+  line-height: 1.8;
+  background: var(--dark);
+}
+
+footer span {
+  color: #E9C1B4;
+}
+
+.confetti {
+  position: fixed;
+  top: -20px;
+  z-index: 10;
+  pointer-events: none;
+  font-size: 20px;
+  animation: fall 3.2s linear forwards;
+}
+
+/* ANIMATIONS */
+@keyframes birthdayFloatUp {
+  0% {
+    transform: translate3d(0, 100px, 0) rotate(-5deg);
+    opacity: 0;
+  }
+  12% { opacity: .38; }
+  85% { opacity: .38; }
+  100% {
+    transform: translate3d(12px, -120vh, 0) rotate(8deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flameDance {
+  from { transform: rotate(-8deg) scale(.9, 1.08); }
+  to { transform: rotate(8deg) scale(1.08, .95); }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 620px) {
+  .welcome-screen { padding: 28px 22px; }
+  .welcome-screen p { font-size: 15px; }
+  .hero { padding: 30px 22px; }
+  h1 { font-size: clamp(40px, 11vw, 58px); }
+  .hero p { font-size: 15px; }
+  .section { padding: 54px 18px; }
+  h2 { font-size: clamp(30px, 8.5vw, 42px); }
+  .memory-grid {
+    grid-template-columns: 1fr;
+    width: min(100%, 300px);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 25px;
+  }
+  .letter { padding: 28px 22px; }
+  .letter p { font-size: 15px; line-height: 1.85; }
+  .primary-btn { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .birthday-love-emoji { animation: none !important; }
+}
+</style>
+</head>
+
+<body>
+<main id="birthday-app">
+
+  <!-- PAGE 1: WELCOME -->
+  <section class="welcome-screen" id="welcome">
+    <div class="eyebrow">A little surprise, made with love</div>
+    <h1>For the most special person <span class="script">in my world.</span></h1>
+    <p>Every little thing here is made just for you, Lavithamma — to celebrate your love, your warmth, and the beautiful person you are.</p>
+    <button class="primary-btn" id="startSurprise">Start your surprise ♡</button>
+    <div class="small-note">A little page for a lifetime of love.</div>
+  </section>
+
+  <!-- PAGE 2: ENVELOPE -->
+  <div class="topline">A little birthday surprise · October 27, 2026</div>
+
+  <section class="hero" id="home">
+    <div class="eyebrow">Made with all my love</div>
+    <h1>For my <span class="script">Lavithamma</span>,<br>with love.</h1>
+    <p>For the woman who made my world warmer, my heart stronger, and my life more beautiful just by being in it.</p>
+
+    <div class="envelope-wrap" id="envelope">
+      <div class="envelope-note">A little letter, just for you ♡</div>
+      <div class="envelope"><div class="seal">♡</div></div>
+    </div>
+
+    <button class="primary-btn" id="openLetter">Open your surprise ✉</button>
+    <div class="small-note">A tiny website, with a whole lot of love.</div>
+  </section>
+
+  <!-- PAGE 3: LETTER FIRST -->
+  <section class="section dark" id="letter">
+    <div class="section-inner">
+      <div class="kicker">A letter from my heart</div>
+      <h2>To the one who<br><span class="script">means the world to me.</span></h2>
+
+      <div class="letter">
+        <p>Dear Lavithamma,</p>
+        <p>Happy 46th birthday to the most special woman in my life. ❤️</p>
+        <p>I know I may not always say it perfectly, and I might not show it every day, but I hope you know how much you mean to me. So many of the good things in me began with you — your love, your patience, your care, and all the little things you do that sometimes go unnoticed.</p>
+        <p>Thank you for being my comfort, my strength, and one of the biggest blessings in my life. I wish I could give back even a little of all the love you have given me.</p>
+        <p>On your birthday, I wish you more reasons to smile, peaceful days, good health, beautiful surprises, and all the happiness your heart deserves. You deserve to be celebrated not just today, but every single day.</p>
+        <p>No matter how old I grow, I'll always be your child — and I'll always be grateful that I get to call you my Lavithamma.</p>
+        <p>I love you more than these little words can ever explain. ❤️</p>
+        <div class="signature">Forever your child ♡</div>
+      </div>
+
+      <div class="continue-wrap">
+        <button class="primary-btn" id="continueButton">Continue to our memories ↓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4: MEMORIES -->
+  <section class="section" id="memories">
+    <div class="section-inner">
+      <div class="kicker">Little moments, endless love</div>
+      <h2>My favourite memories<br><span class="script">have you in them.</span></h2>
+      <p class="intro">
+  Every picture holds a little piece of our story, and every memory reminds me how lucky I am to have you, Lavithamma. ❤️
+</p>
+
+      
+      <div class="memory-grid">
+  <div class="memory-card">
+    <img class="memory-photo"
+         src="photos/childhood.jpg.jpeg"
+         alt="A childhood memory with my mom">
+    <div class="caption">My forever favourite person ❤️</div>
+  </div>
+
+  <div class="memory-card">
+    <img class="memory-photo"
+         src="photos/festive-mom.jpg.jpeg"
+         alt="Lavithamma dressed for a special occasion">
+    <div class="caption">The most beautiful soul 🌷</div>
+  </div>
+
+  <div class="memory-card">
+    <img class="memory-photo"
+         src="photos/mom-and-me.jpg.jpeg"
+         alt="A precious memory with my mom and me">
+    <div class="caption">Home is wherever you are 💗</div>
+  </div>
+</div>-
+
+    </div>
+  </section>
+
+  <!-- PAGE 5: SONG -->
+  <section class="section" id="song">
+    <div class="section-inner">
+      <div class="kicker">A melody just for you</div>
+      <h2>One song, <span class="script">a thousand feelings.</span></h2>
+      <p class="intro">We're saving a special little space for your Telugu birthday song, Lavithamma. ♡</p>
+
+      <div class="letter" style="max-width:560px;text-align:center;padding:30px 22px">
+        <div style="font-size:36px;margin-bottom:10px">♫ ♡ ♫</div>
+        <h3>Neeve Neeve ♡</h3>
+<p style="margin:0 0 18px">A melody just for you, Lavithamma ❤️</p>
+<audio controls preload="metadata" style="width:100%">
+  <source src="music/neeve-neeve.mp3" type="audio/mpeg">
+  Your browser does not support audio playback.
+</audio>
+        <p style="font-size:13px">A little melody, chosen with lots of love.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 6: FINAL BIRTHDAY PAGE; EMOJIS ONLY HERE -->
+  <section class="section cake-section" id="birthday">
+    <div class="birthday-love-layer" id="birthdayLoveLayer" aria-hidden="true"></div>
+
+    <div class="section-inner">
+      <div class="kicker">One last little surprise</div>
+      <h2>Make a wish, <span class="script">Lavithamma.</span></h2>
+      <p class="intro">Forty-six years of being wonderfully you. Here's to a year filled with love, laughter, health, and moments that make your heart feel full.</p>
+
+      <div class="cake" id="cake">
+        <div class="cake-top"></div>
+        <div class="cake-body"></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+
+      <button class="primary-btn" id="wishButton">Tap to make a wish ✨</button>
+
+      <div class="final-message" id="finalMessage">
+        <h3>Happy 46th Birthday, Lavithamma! 🥰</h3>
+        <p>You are loved more than you know, today and always.</p>
+        <div style="font-size:27px;letter-spacing:8px;margin-top:15px">♡ ✦ ♡</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Made with <span>♡</span>, just for Lavithamma.<br>
+    October 27, 2026 · Always your biggest fan.
+  </footer>
+</main>
+
+<script>
+const app = document.getElementById("birthday-app");
+
+/* PAGE 1 -> PAGE 2 */
+document.getElementById("startSurprise").addEventListener("click", function () {
+  app.classList.add("welcome-passed");
+  window.scrollTo({ top: 0, behavior: "auto" });
+});
+
+/* PAGE 2 -> LETTER */
+document.getElementById("openLetter").addEventListener("click", function () {
+  app.classList.add("letter-page-open");
+  document.getElementById("envelope").classList.add("open");
+
+  window.scrollTo({ top: 0, behavior: "auto" });
+});
+
+/* LETTER -> MEMORIES -> SONG -> BIRTHDAY */
+document.getElementById("continueButton").addEventListener("click", function () {
+  app.classList.add("after-letter");
+
+  document.getElementById("memories").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  /* Create the final-page emojis only when that page is reached. */
+  addBirthdayEmojis();
+});
+
+/* SLOW FLOATING EMOJIS; FINAL PAGE ONLY */
+function addBirthdayEmojis() {
+  const layer = document.getElementById("birthdayLoveLayer");
+
+  if (!layer || layer.dataset.created === "true") return;
+  layer.dataset.created = "true";
+
+  const emojis = ["🥰", "💕", "💖", "😍", "💗", "❤️"];
+
+  for (let i = 0; i < 14; i++) {
+    const emoji = document.createElement("span");
+
+    emoji.className = "birthday-love-emoji";
+    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+    emoji.style.left = (4 + Math.random() * 88) + "%";
+    emoji.style.top = (20 + Math.random() * 80) + "%";
+    emoji.style.fontSize = (18 + Math.random() * 13) + "px";
+
+    /* Long duration = slow, gentle movement */
+    emoji.style.animationDuration = (24 + Math.random() * 12) + "s";
+
+    /* Start at different times, one by one */
+    emoji.style.animationDelay = (Math.random() * 12) + "s";
+
+    layer.appendChild(emoji);
+  }
+}
+
+/* BIRTHDAY WISH */
+function makeConfetti() {
+  const symbols = ["♡", "✦", "♥", "✿", "✨"];
+
+  for (let i = 0; i < 42; i++) {
+    const bit = document.createElement("span");
+
+    bit.className = "confetti";
+    bit.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    bit.style.left = Math.random() * 100 + "vw";
+    bit.style.animationDelay = Math.random() * 1.2 + "s";
+    bit.style.color = ["#E8C77E", "#E7A6A0", "#FFF0DB", "#C76E79"][
+      Math.floor(Math.random() * 4)
+    ];
+
+    document.body.appendChild(bit);
+    setTimeout(() => bit.remove(), 4800);
+  }
+}
+
+document.getElementById("wishButton").addEventListener("click", function () {
+  document.getElementById("cake").classList.add("cake-blown");
+  document.getElementById("finalMessage").classList.add("show");
+  this.textContent = "Wish sent with love ❤️";
+
+  makeConfetti();
+});
+</script>
+</body>
+</html>
